@@ -47,9 +47,17 @@ public class LoadBalancerRequestFactory {
 		this.loadBalancer = loadBalancer;
 	}
 
+	/**
+	 *  RibbonLoadBalancerClient execute 方法时调用
+	 * @param request
+	 * @param body
+	 * @param execution
+	 * @return
+	 */
 	public LoadBalancerRequest<ClientHttpResponse> createRequest(final HttpRequest request,
 			final byte[] body, final ClientHttpRequestExecution execution) {
 		return instance -> {
+			// instance -> ribbonServer
             HttpRequest serviceRequest = new ServiceRequestWrapper(request, instance, loadBalancer);
             if (transformers != null) {
                 for (LoadBalancerRequestTransformer transformer : transformers) {
